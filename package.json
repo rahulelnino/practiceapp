@@ -1,0 +1,29 @@
+{
+  "name": "newp",
+  "version": "1.0.0",
+  "description": "sample",
+  "main": "app.js",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "cors": "^2.8.5",
+    "express": "^4.16.4"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "hello",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rahulelnino/practiceapp.git"
+  },
+  "keywords": [
+    "raguk"
+  ],
+  "author": "ragul",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rahulelnino/practiceapp/issues"
+  },
+  "homepage": "https://github.com/rahulelnino/practiceapp#readme"
+}

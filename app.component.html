@@ -1,0 +1,139 @@
+<!--The content below is only a placeholder and can be replaced.-->
+<div class="jumbotron">
+  <div class="row">
+    <!-- <div class="col-ms-4">
+      <app-testco [parentdata]="name" (childEvent)="title=$event"></app-testco>
+    </div> -->
+    <!-- <div class="col-ms-4">
+        <app-cricketers></app-cricketers>
+    </div>
+    <div class="col-ms-4">
+        <app-cricketers-detail></app-cricketers-detail>
+    </div> -->
+    <h1>Routing</h1>
+    <nav>
+      <a routerLink="/cricketers" routerLinkActive="active">Cricketers</a>
+      <a routerLink="/cricketersdetail" routerLinkActive="active">CricketerDetails</a>
+    </nav>
+     <router-outlet></router-outlet>
+  </div>
+  <!-- <div class="row">
+    {{title}}
+  </div>
+  <div class="row">
+    {{message | lowercase}}
+    {{message | uppercase}}
+    {{message | slice:3:5}}
+    {{date | date:short}}
+  </div> -->
+  <div class="container-fluid mb-5">
+    <h1>Bootcamp Enrollment Form</h1>
+    <div class="alert alert-danger" *ngIf="errorMsg">
+        {{errorMsg}}
+    </div>
+    <form #userForm="ngForm" (ngSubmit)="onSubmit()" novalidate *ngIf="!isSubmitted">
+
+      {{userForm.value | json }}
+
+      <hr/>
+
+      {{ userModel | json }}
+
+      <div class="form-group">
+        <label>Name</label>
+        <input type="text" #username="ngModel" [class.is-invalid]="username.invalid && username.touched" 
+        required [(ngModel)]="userModel.name" name="username" class="form-control">
+        <small class="text-danger" [class.d-none]="username.valid || username.untouched">Name is required</small>
+      </div>
+
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" #emailid="ngModel" [class.is-invalid]="emailid.invalid && emailid.touched" 
+        pattern=""
+        required [(ngModel)]="userModel.email" name="emailid" class="form-control">
+        <small class="text-danger" [class.d-none]="emailid.valid || emailid.untouched">Please enter your email id</small>
+      </div>
+
+      <div class="form-group">
+        <label>Phone</label>
+        <input type="tel" [(ngModel)]="userModel.phone" #phonenumber="ngModel" 
+        pattern="^[6-9]{1}[0-9]{9}$"[class.is-invalid]="phonenumber.invalid && phonenumber.touched" 
+        required name="phonenumber" class="form-control">
+        <!-- <small class="text-danger"[class.d-none]="phonenumber.valid || phonenumber.untouched">Phone Number is required & must be 10 digits</small> -->
+        <div *ngIf="phonenumber.errors && (phonenumber.invalid || phonenumber.touched)">
+          <small class="text-danger" *ngIf="phonenumber.errors.required">Phone Number is required</small>
+          <small class="text-danger" *ngIf="phonenumber.errors.pattern">Phone Number must be 10 digits</small>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Interested Topic</label>
+        <select (blur)="defaultSelected(topic.value)" (change)="defaultSelected(topic.value)"class="custom-select" 
+        #topic="ngModel" [class.is-invalid]="hasDefault && topic.touched" required name="topics" [(ngModel)]="userModel.topic">
+            <option value="default">I am Interested in</option>
+            <option *ngFor="let topic of topics">{{topic}}</option>
+        </select>
+        <small class="text-danger" [class.d-none]="!hasDefault || topic.untouched">Please select your interesting topic</small>
+      </div>
+
+      <div class="mb-3">
+        <label>Time Preference</label>
+        <div class="form-check">
+          <input type="radio" class="form-check-input" [class.is-invalid]="timePreference.valid && timePreference.touched"
+          required #timePreference="ngModel" [(ngModel)]="userModel.timePreference" name="timePreference" value="morning">
+          <label class="form-check-label">Morning (9 AM - 12 PM)</label>
+        </div>
+
+        <div class="form-check">
+          <input type="radio" class="form-check-input" [class.is-invalid]="timePreference.valid && timePreference.touched"
+           required #timePreference="ngModel" [(ngModel)]="userModel.timePreference" name="timePreference" value="evening">
+          <label class="form-check-label">Evening (5 PM - 8 PM)</label>
+          
+        </div>
+        <small class="text-danger" [class.d-none]="timePreference.valid || timePreference.untouched">Please select a time slot</small>
+        
+      </div>
+
+      <div class="form-check mb-3">
+        <input type="checkbox" [(ngModel)]="userModel.subscribe" #subscribe="ngModel" name="subscribe" class="form-check-input">
+        <label class="form-check-label">Send me promotional offers</label>
+      </div>
+
+      <div ngModelGroup="address">
+        <div class="form-group">
+          <label>Street</label>
+          <input type="text" class="form-control" #street="ngModel" [class.is-invalid]="street.invalid && street.touched" 
+          required name="street" [(ngModel)]="userModel.street">
+          <small class="text-danger" [class.d-none]="street.valid ||street.untouched">Please enter street name</small>
+        </div>
+
+        <div class="form-group">
+          <label>City</label>
+          <input type="text" class="form-control" #city="ngModel" [class.is-invalid]="city.invalid && city.touched" 
+          required name="city" [(ngModel)]="userModel.city">
+          <small class="text-danger" [class.d-none]="city.valid || city.untouched">Please enter city name</small>
+        </div>
+
+        <div class="form-group">
+            <label>State</label>
+            <input type="text" class="form-control" #state="ngModel" [class.is-invalid]="state.touched && state.invalid" 
+            required name="state" [(ngModel)]="userModel.state">
+            <small class="text-danger" [class.d-none]="state.valid || state.untouched">Please enter state name</small>
+        </div>
+
+        <div class="form-group">
+            <label>Postal Code</label>
+            <input type="text" class="form-control" #postalcode="ngModel" 
+            [class.is-invalid]="postalcode.invalid && postalcode.touched"
+            required pattern="^[1-9]{1}[0-9]{5}$" name="postalcode" [(ngModel)]="userModel.postalcode">
+            <div *ngIf="postalcode.errors && (postalcode.invalid || postalcode.touched)">
+                <small class="text-danger" *ngIf="postalcode.errors.required">Please enter a postal code</small>
+                <small class="text-danger" *ngIf="postalcode.errors.pattern">kindly enter a valid postalcode</small>
+            </div>
+        </div>
+
+      </div>
+        <button [disabled]="!userForm.form.valid || hasDefault" class="btn btn-primary" type="submit">Submit form</button>
+    </form>
+  </div>
+</div>
